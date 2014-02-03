@@ -603,6 +603,8 @@
  * @package   cmf
  * @subpackage external
  */
+namespace Verot;
+    
 class Upload {
 
 
@@ -2570,7 +2572,7 @@ class Upload {
      *    or   string $file Local filename
      * @param  string $lang Optional language code
      */
-    function upload($file, $lang = 'en_GB') {
+    function __construct($file, $lang = 'en_GB') {
 
         $this->version            = '0.32';
 
