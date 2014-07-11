@@ -617,6 +617,12 @@ class Upload {
     var $version;
 
     /**
+     * If this path is given and the dimensions match, use a simple copy. This can be used for animated gifs. When dimensions are exact, no conversion is applied.
+     * @var type 
+     */
+    public $copy_on_samesize;
+    
+    /**
      * Uploaded file name
      *
      * @access public
@@ -4081,9 +4087,21 @@ class Upload {
                             $this->image_dst_x = $this->image_x;
                             $this->image_dst_y = $this->image_y;
                         }
-
+                        
                         if ($this->image_dst_x < 1) $this->image_dst_x = 1;
                         if ($this->image_dst_y < 1) $this->image_dst_y = 1;
+                        
+                        if($this->copy_on_samesize && $this->image_dst_x == $this->image_src_x && $this->image_dst_y == $this->image_src_y)
+                        {
+                            $this->processed = true;
+                            copy($this->file_src_pathname, $this->copy_on_samesize);
+                            return;
+                        }
+                        else
+                        {
+                            $this->copy_on_samesize = false;
+                        }
+                        
                         $tmp = $this->imagecreatenew($this->image_dst_x, $this->image_dst_y);
 
                         if ($gd_version >= 2) {
